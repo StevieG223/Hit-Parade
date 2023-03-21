@@ -3,7 +3,7 @@ from serpapi import GoogleSearch
 import webbrowser
 
 # Add your api key below
-SERPAPI = 'Your Key'
+SERPAPI_KEY = 'Your SerpAPI key'
 
 # open song data, program predicts json file with 'year' and 'song' keys.
 # 'year' value will be list of years as int
@@ -18,12 +18,12 @@ def play_song(song):
     :param song: song to be searched and then played
     :return: None
     """
-    global SERPAPI
+    global SERPAPI_KEY
     params = {
-      "api_key": SERPAPI,
-      "engine": "youtube",
-      "search_query": song
-     }
+        "api_key": SERPAPI_KEY,
+        "engine": "youtube",
+        "search_query": song
+    }
     search = GoogleSearch(params)
     results = search.get_dict()
     video_url = results['video_results'][1]['link']
@@ -68,20 +68,20 @@ def user_interface(data):
         if listen_choice == 'y':
             while True:
                 try:
-                    song_choice =(int(input(f"Choose a song (1-{index}):\t")))
+                    song_choice = (int(input(f"Choose a song (1-{index}):\t")))
                     if 0 < song_choice <= index:
                         break
                     else:
                         print('Please enter a valid choice')
                 except (ValueError, IndexError):
                     print("Oops! That was not a valid number.  Try again_choice...")
-            chosen_song = song_list[song_choice-1]
+            chosen_song = song_list[song_choice - 1]
             print(f"Now playing {chosen_song}")
             play_song(chosen_song)
             break
         elif listen_choice == 'n':
             replay = True
-            while replay == True:
+            while replay:
                 again_choice = input("play again_choice (a) or exit (x)?").lower()
                 if again_choice == 'x':
                     print("See you next time!")
@@ -92,7 +92,9 @@ def user_interface(data):
                     print("Please enter a valid response (a/x):\t")
             break
         else:
-            print("Please submit a valid response (y/n):\t")
+            print('Please enter a valid choice')
+            listen_choice = input("\nWould you like to listen to one of these songs (y/n)?\t").lower()
+
 
 
 user_interface(song_data)
